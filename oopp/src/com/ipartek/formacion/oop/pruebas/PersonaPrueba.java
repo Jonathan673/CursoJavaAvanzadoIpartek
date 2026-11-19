@@ -12,6 +12,7 @@ public class PersonaPrueba {
 		
 		
 		System.out.println(persona.equals(persona2));
+		System.out.println(persona.hashCode());
 		
 		
 		System.out.println(persona.nombre());
