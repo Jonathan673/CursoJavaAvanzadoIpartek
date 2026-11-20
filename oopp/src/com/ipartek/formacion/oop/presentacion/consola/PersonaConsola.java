@@ -1,9 +1,6 @@
 package com.ipartek.formacion.oop.presentacion.consola;
 
-import static com.ipartek.formacion.bibliotecas.consola.BibliotecaConsola.pl;
-import static com.ipartek.formacion.bibliotecas.consola.BibliotecaConsola.rInt;
-import static com.ipartek.formacion.bibliotecas.consola.BibliotecaConsola.rLocalDate;
-import static com.ipartek.formacion.bibliotecas.consola.BibliotecaConsola.rString;
+import static com.ipartek.formacion.bibliotecas.consola.BibliotecaConsola.*;
 
 import java.time.LocalDate;
 
@@ -12,6 +9,7 @@ import com.ipartek.formacion.oop.pojos.Persona;
 
 public class PersonaConsola {
 	private static final int SALIR = 0;
+	private static final String FORMATO_LISTADO = "%-40s %-40s %s";
 
 	public static void main(String[] args) {
 //		int entero = rInt("dame un entero: ");
@@ -65,8 +63,12 @@ public class PersonaConsola {
 	private static void listado() {
 		pl("Listado: ");
 
+		pfl(FORMATO_LISTADO, "Nombre", "Apellidos", "Fecha de nacimiento");
+		pfl(FORMATO_LISTADO, "======", "=========", "===================");
+
 		for (Persona persona : PersonaDao.obtenerTodos()) {
-			pl(persona);
+//			pl(persona);
+			pfl(FORMATO_LISTADO, persona.nombre(), persona.apellidos(), persona.fechaNacimiento());
 		}
 	}
 

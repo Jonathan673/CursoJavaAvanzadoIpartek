@@ -9,8 +9,6 @@ public class BibliotecaConsola {
 	private static final Scanner sc = new Scanner(System.in);
 
 	public static String formatoFecha = "dd MM yyyy";
-	// private static final DateTimeFormatter formateador_fecha =
-	// DateTimeFormatter.ofPattern(formatoFecha);
 
 	private static DateTimeFormatter getFormateadorFecha() {
 
@@ -18,6 +16,9 @@ public class BibliotecaConsola {
 
 	}
 
+	public static void pfl(String formato, Object... args) {
+		System.out.printf(formato+"\n", args);
+	}
 	public static void pl(Object mensaje) {
 		System.out.println(mensaje);
 	}
