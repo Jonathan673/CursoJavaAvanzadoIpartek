@@ -14,10 +14,10 @@ public abstract class User {
 	}
 
 	public User(Long id, String name, String apellidos, String email) {
-		this.id = id;
-		this.nombre = name;
-		this.apellidos = apellidos;
-		this.email = email;
+		this.setId(id);
+		this.setName(name);
+		this.setApellidos(apellidos);
+		this.setEmail(email);
 	}
 
 	public Long getId() {

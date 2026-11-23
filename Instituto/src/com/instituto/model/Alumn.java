@@ -11,8 +11,8 @@ public class Alumn extends User{
 
 	public Alumn(String numeroExpediente, String curso) {
 		super();
-		this.numeroExpediente = numeroExpediente;
-		this.curso = curso;
+		this.setNumeroExpediente(numeroExpediente);
+		this.setCurso(curso);
 	}
 
 	public String getNumeroExpediente() {

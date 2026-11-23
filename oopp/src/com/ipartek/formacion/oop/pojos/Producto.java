@@ -5,6 +5,9 @@ import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Producto {
+	private static final RoundingMode REDONDEO = RoundingMode.HALF_UP;
+	private static final int NUMERO_DECIMALES = 2;
+	private static final String IVA = "0.21";
 	//constantes (static final)
 	private static final String SIN_NOMBRE = "Sin Nombre";
 	private static final BigDecimal PRECIO_POR_DEFECTO = BigDecimal.ZERO;
@@ -64,9 +67,16 @@ public class Producto {
 		if (precio.compareTo(PRECIO_POR_DEFECTO) < 0) {
 			throw new IllegalArgumentException("El precio debe ser superior a 0.");
 		}
-		this.precio = precio.setScale(2, RoundingMode.HALF_UP);
+		this.precio = precio.setScale(NUMERO_DECIMALES, REDONDEO);
 	}
 
+	
+	public BigDecimal getIva() {
+		return precio.multiply(new BigDecimal(IVA).setScale(NUMERO_DECIMALES, REDONDEO));
+	}
+	public BigDecimal getPrecioIvaIncluido() {
+		return precio.add(getIva());
+	}
 	//methods
 	@Override
 	public int hashCode() {

@@ -11,8 +11,8 @@ public class Teacher extends User{
 
 	public Teacher(String especialidad, String departamento) {
 		super();
-		this.especialidad = especialidad;
-		this.departamento = departamento;
+		this.setEspecialidad(especialidad);
+		this.setDepartamento(departamento);
 	}
 
 	public String getEspecialidad() {
