@@ -5,12 +5,12 @@ import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Producto {
+	//constantes (static final)
 	private static final RoundingMode REDONDEO = RoundingMode.HALF_UP;
 	private static final int NUMERO_DECIMALES = 2;
 	private static final String IVA = "0.21";
-	//constantes (static final)
-	private static final String SIN_NOMBRE = "Sin Nombre";
-	private static final BigDecimal PRECIO_POR_DEFECTO = BigDecimal.ZERO;
+	protected static final String SIN_NOMBRE = "Sin Nombre";
+	protected static final BigDecimal PRECIO_POR_DEFECTO = BigDecimal.ZERO;
 
 	// variables de instancia
 	private Long id;
@@ -100,5 +100,6 @@ public class Producto {
 	public String toString() {
 		return "Producto [id=" + id + ", nombre=" + nombre + ", precio=" + precio + "]";
 	}
+
 
 }
