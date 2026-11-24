@@ -22,7 +22,6 @@ public class InterfacesPrueba {
 			}
 		}
 	}
-
 }
 
 interface Rodable {
