@@ -15,6 +15,12 @@ public class JDBCPrueba {
 		String pass = "1234";
 		 Connection con = DriverManager.getConnection(url,user,pass);
 		 Statement st = con.createStatement();
+		 
+		 int numeroResultados = st.executeUpdate("UPDATE productos SET nombre='portatil perfecto',precio=5555.5 WHERE id_productos=1");
+		 
+		 
+		 System.out.println(numeroResultados);
+		 
 		 ResultSet rs = st.executeQuery("Select * from productos");
 		 
 		 
