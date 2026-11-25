@@ -12,5 +12,9 @@ public class ConexionDB {
 	public static Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(url, user, pass);
 	}
+//	public static PreparedStatement getPts(String sql) throws SQLException {
+//		Connection con = getConnection();
+//		return con.prepareStatement(sql);
+//	}
 
 }

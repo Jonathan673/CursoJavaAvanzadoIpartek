@@ -1,7 +1,6 @@
 package com.ipartek.formacion.oop.accesodatos;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,24 +14,22 @@ import com.ipartek.formacion.oop.pojos.Producto;
 
 //source override implement methods
 public class ProductoDaoProfesor implements ProductoInterfaceProfesor {
-	private static final String jdbc_url = "jdbc:mysql://localhost:3306/2993_basico";
-	private static final String jdbc_user = "root";
-	private static final String jdbc_pass = "1234";
-
 	private static final String SQL_SELECT = "SELECT id_productos, nombre, precio FROM productos";
 	private static final String SQL_SELECT_ID = "SELECT id_productos, nombre, precio FROM productos WHERE id_productos = ? ";
 	private static final String SQL_INSERT = "INSERT INTO productos (nombre, precio) VALUES(?,?)";
 	private static final String SQL_UPDATE = "UPDATE  productos SET nombre=?, precio=? WHERE id_productos = ?";
 	private static final String SQL_DELETE = "DELETE FROM productos WHERE id_productos = ?";
 
+	
 	@Override
 	public Iterable<Producto> obtenerTodos() {
 		// try with resources
-		try (Connection con = DriverManager.getConnection(jdbc_url, jdbc_user, jdbc_pass);
-				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery(SQL_SELECT)) {
+		try (Connection con = ConexionDB.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_SELECT);
+						ResultSet rs = pst.executeQuery();) {
 			ArrayList<Producto> productos = new ArrayList<>();
 
+			
 			while (rs.next()) {
 				productos.add(
 						new Producto(rs.getLong("id_productos"), rs.getString("nombre"), rs.getBigDecimal("precio")));
@@ -47,7 +44,7 @@ public class ProductoDaoProfesor implements ProductoInterfaceProfesor {
 	@Override
 	public Optional<Producto> obtenerPorId(Long id) {
 		// try with resources, usaremos ademas prepared statement
-		try (Connection con = DriverManager.getConnection(jdbc_url, jdbc_user, jdbc_pass);
+		try (Connection con = ConexionDB.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_SELECT_ID);) {
 
 			// metemos el dato en la primera interrogacion de la query
@@ -71,18 +68,15 @@ public class ProductoDaoProfesor implements ProductoInterfaceProfesor {
 	@Override
 	public Producto insertarProducto(Producto producto) {
 		// try with resources, usaremos ademas prepared statement
-		try (Connection con = DriverManager.getConnection(jdbc_url, jdbc_user, jdbc_pass);
+		try (Connection con = ConexionDB.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);) {
 
 			// metemos el dato en la primera interrogacion de la query
 			pst.setString(1, producto.getNombre());
 			pst.setBigDecimal(2, producto.getPrecio());
 			// ejecutamos
-			int numeroRegistrosModificados = pst.executeUpdate();
 
-			if (numeroRegistrosModificados != 1) {
-				throw new AccesoDatosException("¡Se han modificado %s registros!" + numeroRegistrosModificados);
-			}
+			regAfectados(pst.executeUpdate());
 			//obtenemos la key
 			ResultSet rs = pst.getGeneratedKeys();
 			rs.next();
@@ -96,7 +90,7 @@ public class ProductoDaoProfesor implements ProductoInterfaceProfesor {
 	@Override
 	public Producto modificarProducto(Producto producto) {
 		// try with resources, usaremos ademas prepared statement
-		try (Connection con = DriverManager.getConnection(jdbc_url, jdbc_user, jdbc_pass);
+		try (Connection con = ConexionDB.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_UPDATE);) {
 			
 			// metemos el dato en la primera interrogacion de la query
@@ -104,11 +98,8 @@ public class ProductoDaoProfesor implements ProductoInterfaceProfesor {
 			pst.setBigDecimal(2, producto.getPrecio());
 			pst.setLong(3, producto.getId());
 			// ejecutamos
-			int numeroRegistrosModificados = pst.executeUpdate();
 			
-			if (numeroRegistrosModificados != 1) {
-				throw new AccesoDatosException("¡Se han modificado %s registros!" + numeroRegistrosModificados);
-			}
+			regAfectados(pst.executeUpdate());
 
 			return producto;
 		} catch (SQLException e) {
@@ -118,19 +109,20 @@ public class ProductoDaoProfesor implements ProductoInterfaceProfesor {
 	@Override
 	public void eliminarProducto(Long id) {
 		// try with resources, usaremos ademas prepared statement
-		try (Connection con = DriverManager.getConnection(jdbc_url, jdbc_user, jdbc_pass);
+		try (Connection con = ConexionDB.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_DELETE);) {
 
 			pst.setLong(1, id);
-			// ejecutamos
-			int numeroRegistrosModificados = pst.executeUpdate();
-			
-			if (numeroRegistrosModificados != 1) {
-				throw new AccesoDatosException("¡Se han modificado %s registros!" + numeroRegistrosModificados);
-			}
-
+			// ejecutamos, el metodo de abajo devuelve el numero de registros afectados, siempre y cuando le afecte a mas de uno
+			regAfectados(pst.executeUpdate());
 		} catch (SQLException e) {
 			throw new AccesoDatosException("Error al obtener el producto", e);
+		}
+	}
+
+	public void regAfectados(int numeroRegistrosModificados) {
+		if (numeroRegistrosModificados != 1) {
+			throw new AccesoDatosException("¡Se han modificado %s registros!" + numeroRegistrosModificados);
 		}
 	}
 
