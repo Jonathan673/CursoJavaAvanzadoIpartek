@@ -15,9 +15,13 @@ public class ProductoConsolaProfesor {
 		
 		
 //		System.out.println(dao.insertarProducto(new Producto("mesa",new BigDecimal("1234.5"))));
-		dao.insertarProducto(new Producto("mesa",new BigDecimal("1234.5")));
-//		dao.modificarProducto(new Producto(12L,"nuevo2",new BigDecimal("1234.5")));
-		dao.eliminarProducto(22L);
+		dao.insertarProducto(new Producto("mesa656",new BigDecimal("1234.5")));
+//		dao.modificarProducto(new Producto(24L,"nuevokl2",new BigDecimal("1234.5")));
+		try {
+			dao.eliminarProducto(28L);
+		} catch (Exception e) {
+			System.out.println("No existe ese usuario para borrarlo");
+		}
 		
 		for(Producto producto:dao.obtenerTodos()) {
 			System.out.println(producto);
