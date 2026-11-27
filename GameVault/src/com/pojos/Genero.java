@@ -6,17 +6,16 @@ public class Genero {
 	private Long id;
 	private String nombre;
 	
-	
-	
-	
+	//
 	public Genero(Long id, String nombre) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
+		setId(id);
+		setNombre(nombre);
 	}
 	public Genero() {
 		
 	}
+	
+	//
 	public Long getId() {
 		return id;
 	}
@@ -29,6 +28,8 @@ public class Genero {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	//
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, nombre);
@@ -44,6 +45,7 @@ public class Genero {
 		Genero other = (Genero) obj;
 		return Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre);
 	}
+	//
 	@Override
 	public String toString() {
 		return "Genero [id=" + id + ", nombre=" + nombre + "]";

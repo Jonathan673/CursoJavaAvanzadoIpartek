@@ -3,7 +3,7 @@ package com.interfaces;
 public interface DaoInterface<T>{
 	Iterable <T> obtenerTodos();
 	T buscarGenero(Long id);
-	T insertarGenero(Object object);
-	T modificarGenero(Object object);
+	T insertarGenero(T object);
+	T modificarGenero(T object);
 	void eliminarGenero(Long id);
 }
